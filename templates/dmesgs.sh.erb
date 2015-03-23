@@ -1,0 +1,30 @@
+#!/bin/sh
+
+FOUND=0
+
+FINALDIR=<%= @webroot %>/<%= @webdir %>
+
+OUTFILE=/tmp/OUTFILE.XXXXXXXXXX
+TMPMAIL=/tmp/MAIL.XXXXXXXXXX
+
+perl -p -e 's/\r\n/\n/g' /dev/stdin > ${TMPMAIL}
+
+while read LINE;do
+	if [ ${FOUND} -eq 0 ];then
+		if [ "${LINE}" == "" ];then
+			FOUND=1
+			continue
+		else
+			HOST=`echo ${LINE} | awk '/Subject: / {print $3}'`
+			continue
+		fi
+	fi
+	echo "${LINE}" >> ${OUTFILE}
+
+done < "${TMPMAIL}"
+
+rm -f ${TMPMAIL}
+
+mkdir -p ${FINALDIR}/${HOST}
+mv ${OUTFILE} ${FINALDIR}/${HOST}/dmesg
+chmod 644 ${FINALDIR}/${HOST}/dmesg
