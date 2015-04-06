@@ -39,8 +39,8 @@ class dmesgs (
   $webroot = '/var/www/htdocs',
   $webdir  = 'dmesg',
   $webdirowner = 'nobody',
-  $aliases = '/etc/aliases',
-  $alias   = 'dmesg',
+  $aliases_file = '/etc/aliases',
+  $dmesg_alias = 'dmesg',
   $ensure  = 'present',
   $script  = '/usr/bin/process_dmesgs.sh',
 ){
@@ -57,9 +57,9 @@ class dmesgs (
     owner  => $webdirowner,
   }
 
-  mailalias { $alias:
+  mailalias { $dmesg_alias:
     recipient => "|${script}",
-    target    => $aliases,
+    target    => $aliases_file,
   }
 
 }
