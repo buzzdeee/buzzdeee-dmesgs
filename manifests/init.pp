@@ -43,6 +43,7 @@ class dmesgs (
   $dmesg_alias = 'dmesg',
   $ensure  = 'present',
   $script  = '/usr/bin/process_dmesgs.sh',
+  $other_recipient = undef,
 ){
 
   file { $script:
@@ -57,8 +58,14 @@ class dmesgs (
     owner  => $webdirowner,
   }
 
+  if $other_recipient {
+    $recipients = [ "|${script}", $other_recipient ]
+  } else {
+    $recipients = "|${script}"
+  }
+
   mailalias { $dmesg_alias:
-    recipient => "|${script}",
+    recipient => $recipients,
     target    => $aliases_file,
   }
 
