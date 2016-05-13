@@ -29,5 +29,6 @@ done < "${TMPMAIL}"
 rm -f ${TMPMAIL}
 
 mkdir -p ${FINALDIR}/${HOST}
+chmod 755 ${FINALDIR}/${HOST}
 mv ${OUTFILE} ${FINALDIR}/${HOST}/dmesg
 chmod 644 ${FINALDIR}/${HOST}/dmesg
